@@ -12,12 +12,16 @@ import (
 	"encoding/binary"
 
 	"github.com/ncruces/go-sqlite3"
+	"github.com/tetratelabs/wazero"
+	"github.com/tetratelabs/wazero/api"
+	"github.com/tetratelabs/wazero/experimental"
 )
 
 //go:embed sqlite3.wasm
 var wasmBinary []byte
 
 func init() {
+	sqlite3.RuntimeConfig = wazero.NewRuntimeConfig().WithCoreFeatures(api.CoreFeaturesV2 | experimental.CoreFeaturesThreads)
 	sqlite3.Binary = wasmBinary
 }
 
